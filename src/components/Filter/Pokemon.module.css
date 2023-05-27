@@ -1,0 +1,8 @@
+.filterBlock{
+    display: flex;
+    gap: 50px;
+}
+.mySelect,.selectType{
+    width: 200px;
+    margin-bottom: 25px;
+}

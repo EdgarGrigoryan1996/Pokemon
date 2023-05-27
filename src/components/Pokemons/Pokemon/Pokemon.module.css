@@ -1,0 +1,19 @@
+.pokemonBlock{
+    text-align: center;
+    width: 300px;
+    height: 400px;
+    border:1px solid #000;
+    flex-basis: 19%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.pokemonBlock:hover{
+    background-color: antiquewhite;
+}
+.pokemonName{
+    font-size: 36px;
+}
