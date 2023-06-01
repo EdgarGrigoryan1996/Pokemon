@@ -1,11 +1,21 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {getPokemonsWithType} from "../../utils/helpFunctions/getPokemonsWithType";
+import {Abilitiy, Pokemon} from "../../types/pokemon";
+import {AppDispatch} from "../../app/store";
 
-const initialState = {
+export interface State {
+    error: boolean
+    pokemons: Abilitiy[]
+    currentPokemonInfo: Pokemon | null
+    type: string
+    limit: string
+}
+
+const initialState: State = {
     error: false,
     pokemons: [],
     currentPokemonInfo: null,
-    type: "all",
+    type: "All",
     limit: "10",
 };
 
@@ -53,43 +63,46 @@ export const {
     changePokemonsType,
 } = pokemonsSlice.actions;
 
-export const fetchPokemonsThunk = (limit) => {
-    return async (dispatch, getState) => {
+export const fetchPokemonsThunk = (limit: string) => {
+    return async (dispatch: AppDispatch, getState: any) => {
         const state = getState().pokemons
-        if (state.type === "all") {
-            if (state.pokemons.length <= limit) {
-                const currentRequestLimit = limit - state.pokemons.length
+        if (state.pokemons.length > limit) {
+            dispatch(fetchPokemonsSuccess({
+                limit
+            }))
+        } else {
+
+            if (state.type === "All") {
+                const currentRequestLimit = +limit - state.pokemons.length
                 try {
                     const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${currentRequestLimit}&offset=${state.pokemons.length}`);
                     const pokemons = await response.json();
                     dispatch(fetchPokemonsSuccess({
                         pokemons: pokemons.results
                     }))
-                } catch (error) {
+                } catch (error: any) {
                     dispatch(fetchPokemonsFailed(error.message));
                 }
+
             } else {
-                dispatch(fetchPokemonsSuccess({
-                    limit
-                }))
-            }
-        } else {
-            const currentRequestLimit = limit - state.pokemons.length
-            try {
-                const response = await fetch(`https://pokeapi.co/api/v2/type/${state.type}?limit=${currentRequestLimit}&offset=${state.pokemons.length}`);
-                const pokemons = await response.json();
-                dispatch(fetchPokemonsSuccess({
-                    pokemonsWithType: getPokemonsWithType(pokemons.pokemon, limit)
-                }))
-            } catch (error) {
-                dispatch(fetchPokemonsFailed(error.message));
+                const currentRequestLimit = +limit - state.pokemons.length
+                try {
+                    const response = await fetch(`https://pokeapi.co/api/v2/type/${state.type}?limit=${currentRequestLimit}&offset=${state.pokemons.length}`);
+                    const pokemons = await response.json();
+                    dispatch(fetchPokemonsSuccess({
+                        pokemonsWithType: getPokemonsWithType(pokemons.pokemon, +limit)
+                    }))
+                } catch (error: any) {
+                    dispatch(fetchPokemonsFailed(error.message));
+                }
             }
         }
+
     }
 }
 
-export const showCurrentPokemonInfo = (pokemon) => {
-    return async (dispatch) => {
+export const showCurrentPokemonInfo = (pokemon: Abilitiy) => {
+    return async (dispatch: AppDispatch) => {
         try {
             const response = await fetch(pokemon.url);
             const currentPokemon = await response.json()

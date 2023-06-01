@@ -1,8 +1,13 @@
-import React from 'react';
+import React, {FC} from 'react';
 import s from "./Pokemon.module.css"
 import {capitalizeFirstLetter} from "../../../utils/helpFunctions/capitalizeFirstLetter";
 
-function Pokemon(props) {
+interface Props {
+    name: string;
+    onclick: () => void
+}
+
+const Pokemon: FC<Props> = (props) => {
 
     return (
         <div className={s.pokemonBlock} onClick={props.onclick}>

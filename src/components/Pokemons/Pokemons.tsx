@@ -1,15 +1,21 @@
-import React, {useState} from 'react';
+import React, {FC, useState} from 'react';
 import Pokemon from "./Pokemon/Pokemon";
 import s from "./Pokemons.module.css"
 import PokemonPopup from "./PokemonPopup/PokemonPopup";
 import {useDispatch, useSelector} from "react-redux";
-import {showCurrentPokemonInfo} from "../../features/Pokemons/pokemonsSlice.js";
+import {showCurrentPokemonInfo} from "../../features/Pokemons/pokemonsSlice";
+import {Abilitiy} from "../../types/pokemon";
+import {AppDispatch, RootState} from "../../app/store";
 
-function Pokemons(props) {
-    const dispatch = useDispatch()
+interface Props {
+    pokemons: Abilitiy[]
+}
+
+const Pokemons: FC<Props> = (props) => {
+    const dispatch:AppDispatch = useDispatch()
     const [pokemonPopupStatus, setPokemonPopupStatus] = useState(false)
 
-    const currentPokemon = useSelector((state) => {
+    const currentPokemon = useSelector((state: RootState) => {
         return state.pokemons.currentPokemonInfo
     })
 
@@ -19,10 +25,10 @@ function Pokemons(props) {
             {(pokemonPopupStatus && currentPokemon) &&
                 <PokemonPopup setPokemonPopupStatus={setPokemonPopupStatus} pokemon={currentPokemon}/>}
 
-            {props.pokemons?.map((pokemon) => {
+            {props.pokemons.map((pokemon: Abilitiy) => {
 
                 return (
-                    <Pokemon key={pokemon.id} name={pokemon.name} onclick={() => {
+                    <Pokemon key={pokemon.url} name={pokemon.name} onclick={() => {
                         dispatch(showCurrentPokemonInfo(pokemon))
                         setPokemonPopupStatus(true)
                     }

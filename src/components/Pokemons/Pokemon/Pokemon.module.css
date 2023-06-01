@@ -1,8 +1,8 @@
-.pokemonBlock{
+.pokemonBlock {
     text-align: center;
     width: 300px;
-    height: 400px;
-    border:1px solid #000;
+    height: 250px;
+    border: 1px solid #ffa2a2;
     flex-basis: 19%;
     border-radius: 10px;
     display: flex;
@@ -10,10 +10,17 @@
     justify-content: space-around;
     cursor: pointer;
     transition: all 0.2s ease;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    color: #6d0f0f;
 }
-.pokemonBlock:hover{
-    background-color: antiquewhite;
+
+.pokemonBlock:hover {
+    background-color: rgba(205, 92, 92, 1);
+    color: #fff;
+    transform: scale(1.05);
+    z-index: 1;
 }
-.pokemonName{
+
+.pokemonName {
     font-size: 36px;
 }

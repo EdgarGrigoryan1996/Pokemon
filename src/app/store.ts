@@ -1,5 +1,5 @@
 import {configureStore} from '@reduxjs/toolkit';
-import pokemonsSlice from "../features/Pokemons/pokemonsSlice.js";
+import pokemonsSlice from "../features/Pokemons/pokemonsSlice";
 import thunkMiddleware from "redux-thunk"
 
 export const store = configureStore({
@@ -10,3 +10,6 @@ export const store = configureStore({
         return getDefaultMiddleware().concat(thunkMiddleware)
     }
 });
+
+export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>
